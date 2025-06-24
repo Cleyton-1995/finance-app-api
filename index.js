@@ -1,2 +1,2 @@
-const name = '';
-console.log(name);
+const n = '';
+console.log(n);
