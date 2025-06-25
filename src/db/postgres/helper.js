@@ -2,9 +2,11 @@ import pg from 'pg';
 
 const { Pool } = pg;
 
+console.log('Senha recebida:', process.env.POSTGRES_PASSWORD); // debug
+
 export const pool = new Pool({
     user: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
+    password: String(process.env.POSTGRES_PASSWORD || ''),
     port: process.env.POSTGRES_PORT,
     database: process.env.POSTGRES_DB,
     host: process.env.POSTGRES_HOST,
