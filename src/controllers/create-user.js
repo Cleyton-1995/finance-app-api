@@ -1,4 +1,4 @@
-import { CreateUserCase } from '../use-cases/create-user.js';
+import { CreateUserCase } from '../use-cases/index.js';
 import { EmailAlreadyIsUserError } from '../errors/user.js';
 import {
     badRequest,
