@@ -8,6 +8,7 @@ import {
     invalidPasswordResponse,
     checkIfEmailIsValid,
 } from '../helpers/index.js';
+import { validationRequiredFields } from '../helpers/validation.js';
 
 export class CreateUserController {
     constructor(createUserCase) {
@@ -23,6 +24,15 @@ export class CreateUserController {
                 'email',
                 'password',
             ];
+
+            const { ok: requiredFieldWhereProvided, missingField } =
+                validationRequiredFields(params, requiredFields);
+
+            if (!requiredFieldWhereProvided) {
+                return badRequest({
+                    message: `The field ${missingField} is required.`,
+                });
+            }
 
             for (const field of requiredFields) {
                 if (!params[field] || params[field].trim().length === 0) {

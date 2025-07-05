@@ -5,6 +5,7 @@ import {
     invalidIdResponse,
 } from '../helpers/index.js';
 import validator from 'validator';
+import { validationRequiredFields } from '../helpers/validation.js';
 
 export class CreateTransactionController {
     constructor(createTransactionUseCase) {
@@ -23,15 +24,13 @@ export class CreateTransactionController {
                 'type',
             ];
 
-            for (const field of requiredFields) {
-                if (
-                    !params[field] ||
-                    params[field].toString().trim().length === 0
-                ) {
-                    return badRequest({
-                        message: `Missing parm: ${field}`,
-                    });
-                }
+            const { ok: requiredFieldWhereProvided, missingField } =
+                validationRequiredFields(params, requiredFields);
+
+            if (!requiredFieldWhereProvided) {
+                return badRequest({
+                    message: `The field ${missingField} is required.`,
+                });
             }
 
             const userIdIsValid = checkIfIdIsValid(params.user_id);
