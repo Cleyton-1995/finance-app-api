@@ -2,8 +2,8 @@ import {
     ok,
     serverError,
     invalidIdResponse,
-    checkIfIdIsValid,
     userNotFoundResponse,
+    checkIfIdIsValid,
 } from '../helpers/index.js';
 
 export class GetUserByIdController {
