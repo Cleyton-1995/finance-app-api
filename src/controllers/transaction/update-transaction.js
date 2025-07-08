@@ -56,6 +56,7 @@ export class UpdateTransactionsController {
 
             const transactions = await this.updateTransactionsUseCase.execute(
                 httpRequest.params.transactionId,
+                params,
             );
 
             return ok(transactions);
