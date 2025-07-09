@@ -1,5 +1,5 @@
 import {
-    checkIfAmountIsValid,
+    checkIfIdIsValid,
     invalidIdResponse,
     ok,
     serverError,
@@ -10,7 +10,7 @@ export class DeleteTransactionController {
     }
     async execute(httpRequest) {
         try {
-            const idIsValid = checkIfAmountIsValid(
+            const idIsValid = checkIfIdIsValid(
                 httpRequest.params.transactionId,
             );
 
