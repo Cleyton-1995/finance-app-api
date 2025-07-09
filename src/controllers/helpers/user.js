@@ -16,7 +16,8 @@ export const invalidIdResponse = () =>
         message: `The provided id is not valid.`,
     });
 
-export const userNotFoundResponse = () => notFound('User not found.');
+export const userNotFoundResponse = () =>
+    notFound({ Message: 'User not found.' });
 
 export const checkIfPasswordIsValid = (password) => password.length < 6;
 
