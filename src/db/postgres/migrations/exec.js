@@ -1,4 +1,4 @@
-import 'dotenv/config.js'; // <- PRIMEIRO DE TUDO
+import 'dotenv/config'; // <- PRIMEIRO DE TUDO
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
