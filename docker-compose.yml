@@ -6,7 +6,7 @@ services:
         container_name: financeapp-postgres
         environment:
             POSTGRES_PASSWORD: csc
-            POSTGRES_USER: postgres
+            POSTGRES_USER: root
             POSTGRES_DB: finance-app
         ports:
             - '5432:5432'
