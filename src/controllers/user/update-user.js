@@ -1,14 +1,12 @@
+import { ZodError } from 'zod';
 import { EmailAlreadyIsUserError } from '../../errors/user.js';
+import { updateUserSchema } from '../../schemas/index.js';
 import {
     badRequest,
     ok,
     serverError,
     invalidIdResponse,
     checkIfIdIsValid,
-    checkIfPasswordIsValid,
-    emailAlreadyIsUserResponse,
-    invalidPasswordResponse,
-    checkIfEmailIsValid,
 } from '../helpers/index.js';
 
 export class UpdateUserController {
@@ -27,38 +25,7 @@ export class UpdateUserController {
 
             const params = httpRequest.body;
 
-            const allowedFields = [
-                'first_name',
-                'last_name',
-                'email',
-                'password',
-            ];
-
-            const someFieldsIsNotAllowed = Object.keys(params).some(
-                (field) => !allowedFields.includes(field),
-            );
-
-            if (someFieldsIsNotAllowed) {
-                return badRequest({
-                    message: 'Some provided field is not allowed',
-                });
-            }
-
-            if (params.password) {
-                const passwordIsValid = checkIfPasswordIsValid(params.password);
-
-                if (passwordIsValid) {
-                    return invalidPasswordResponse();
-                }
-            }
-
-            if (params.email) {
-                const emailIsValid = checkIfEmailIsValid(params.email);
-
-                if (!emailIsValid) {
-                    return emailAlreadyIsUserResponse();
-                }
-            }
+            await updateUserSchema.parseAsync(params);
 
             const updateUser = await this.updateUserUseCase.execute(
                 userId,
@@ -67,6 +34,19 @@ export class UpdateUserController {
 
             return ok(updateUser);
         } catch (error) {
+            if (error instanceof ZodError) {
+                const issues = error.issues.map((issue) => {
+                    if (issue.code === 'unrecognized_keys') {
+                        return 'Some provided field is not allowed.';
+                    }
+                    return issue.message;
+                });
+
+                return badRequest({
+                    message: issues.length === 1 ? issues[0] : issues,
+                });
+            }
+
             if (error instanceof EmailAlreadyIsUserError) {
                 return badRequest({
                     message: error.message,
