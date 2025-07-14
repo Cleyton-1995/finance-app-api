@@ -1,67 +1,33 @@
+import { ZodError } from 'zod';
+import { badRequest, created, serverError } from '../helpers/index.js';
 import { EmailAlreadyIsUserError } from '../../errors/user.js';
-import {
-    badRequest,
-    created,
-    serverError,
-    checkIfPasswordIsValid,
-    emailAlreadyIsUserResponse,
-    invalidPasswordResponse,
-    checkIfEmailIsValid,
-} from '../helpers/index.js';
-import {
-    requiredFieldIsMissingResponse,
-    validationRequiredFields,
-} from '../helpers/validation.js';
+import { createUserSchema } from '../../schemas/index.js';
 
 export class CreateUserController {
     constructor(createUserCase) {
         this.createUserCase = createUserCase;
     }
+
     async execute(httpRequest) {
         try {
             const params = httpRequest.body;
 
-            const requiredFields = [
-                'first_name',
-                'last_name',
-                'email',
-                'password',
-            ];
-
-            const { ok: requiredFieldWhereProvided, missingField } =
-                validationRequiredFields(params, requiredFields);
-
-            if (!requiredFieldWhereProvided) {
-                return requiredFieldIsMissingResponse(missingField);
-            }
-
-            for (const field of requiredFields) {
-                if (!params[field] || params[field].trim().length === 0) {
-                    return badRequest({ message: `Missing param: ${field}` });
-                }
-            }
-
-            const passwordIsValid = checkIfPasswordIsValid(params.password);
-
-            if (passwordIsValid) {
-                return invalidPasswordResponse();
-            }
-
-            const emailIsValid = checkIfEmailIsValid(params.email);
-
-            if (!emailIsValid) {
-                return emailAlreadyIsUserResponse();
-            }
+            await createUserSchema.parseAsync(params);
 
             const createdUser = await this.createUserCase.execute(params);
 
             return created(createdUser);
         } catch (error) {
+            if (error instanceof ZodError) {
+                const messages = error.issues.map((issue) => issue.message);
+                return badRequest({
+                    message: messages.length === 1 ? messages[0] : messages,
+                });
+            }
+
             if (error instanceof EmailAlreadyIsUserError) {
                 return badRequest({ message: error.message });
             }
-
-            console.log(error);
 
             return serverError();
         }
