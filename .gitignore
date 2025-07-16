@@ -1,4 +1,12 @@
-node_modules
-.postgres-data
-* .env
-/src/generated/prisma
+# Dependências
+node_modules/
+
+# Banco de dados local
+.postgres-data/
+
+# Arquivos de ambiente
+.env
+.env.*
+
+# Prisma gerado
+/src/generated/prisma/
