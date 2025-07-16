@@ -6,7 +6,6 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "postinstall": "npx husky install && npx prisma generate",
-        "migrations": "node src/db/postgres/migration/exec.js",
         "start": "node --watch index.js"
     },
     "keywords": [],
