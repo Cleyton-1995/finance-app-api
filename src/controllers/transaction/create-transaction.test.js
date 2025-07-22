@@ -124,7 +124,23 @@ describe('CreateTransactionController', () => {
         const response = await sut.execute({
             body: {
                 ...baseHttpRequest.body,
-                amount: 'invalid_date',
+                date: 'invalid_date',
+            },
+        });
+
+        //  Assert
+        expect(response.statusCode).toBe(400);
+    });
+
+    it('should return 400 when type is not EXPENSE, EARNING or INVESTMENT', async () => {
+        // Arrange
+        const { sut } = makeSut();
+
+        // Act
+        const response = await sut.execute({
+            body: {
+                ...baseHttpRequest.body,
+                type: 'invalid_type',
             },
         });
 
