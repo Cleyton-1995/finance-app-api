@@ -109,4 +109,25 @@ describe('GetTransactionsByUserIdController', () => {
         //  Assert
         expect(response.statusCode).toBe(500);
     });
+
+    it('should call GetTransactionsByUserIdUseCase with correct params', async () => {
+        // Arrange
+        const { sut, getTransactionsByUserIdUseCase } = makeSut();
+        const executeSpy = jest.spyOn(
+            getTransactionsByUserIdUseCase,
+            'execute',
+        );
+
+        const userId = faker.string.uuid();
+
+        // Act
+        await sut.execute({
+            query: {
+                userId: userId,
+            },
+        });
+
+        //  Assert
+        expect(executeSpy).toHaveBeenCalledWith(userId);
+    });
 });
