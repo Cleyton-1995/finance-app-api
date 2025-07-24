@@ -1,16 +1,17 @@
 import { v4 as uuidv4 } from 'uuid';
-import bcrypt from 'bcrypt';
 import { EmailAlreadyIsUserError } from '../../errors/user.js';
 
 export class CreateUserCase {
     constructor(
         postgresGetUserByEmailRepository,
         postgresCreateUserRepository,
+        passwordHasherAdapter,
     ) {
         this.postgresGetUserByEmailRepository =
             postgresGetUserByEmailRepository;
 
         this.postgresCreateUserRepository = postgresCreateUserRepository;
+        this.passwordHasherAdapter = passwordHasherAdapter;
     }
 
     async execute(createUserParams) {
@@ -25,7 +26,9 @@ export class CreateUserCase {
 
         const userId = uuidv4();
 
-        const hashedPassword = await bcrypt.hash(createUserParams.password, 10);
+        const hashedPassword = await this.passwordHasherAdapter.execute(
+            createUserParams.password,
+        );
 
         const user = {
             ...createUserParams,
