@@ -10,3 +10,6 @@ node_modules/
 
 # Prisma gerado
 /src/generated/prisma/
+
+# Tests
+coverage
