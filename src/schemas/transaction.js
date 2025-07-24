@@ -53,7 +53,10 @@ export const updateTransactionSchema = createTransactionSchema
     .omit({
         user_id: true,
     })
-    .partial();
+    .partial()
+    .strict({
+        message: 'Some provided fields is not allowed',
+    });
 
 export const getTransactionsByUserIdSchema = z.object({
     user_id: z.string().uuid(),
