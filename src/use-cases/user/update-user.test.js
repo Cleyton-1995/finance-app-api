@@ -4,6 +4,7 @@ import { EmailAlreadyIsUserError } from '../../errors/user';
 
 describe('UpdateUserUseCase', () => {
     const user = {
+        id: faker.string.uuid(),
         first_name: faker.person.firstName(),
         last_name: faker.person.lastName(),
         email: faker.internet.email(),
@@ -143,7 +144,7 @@ describe('UpdateUserUseCase', () => {
         });
     });
 
-    it('should  throw if GetUserByEmailRepository throws', async () => {
+    it('should throw if GetUserByEmailRepository throws', async () => {
         // Arrange
         const { sut, getUserByEmailRepository } = makeSut();
         jest.spyOn(getUserByEmailRepository, 'execute').mockResolvedValue(
@@ -152,7 +153,24 @@ describe('UpdateUserUseCase', () => {
 
         // Act
         const promise = sut.execute(faker.string.uuid(), {
-            email: user.email,
+            email: faker.internet.email(),
+        });
+
+        //  Assert
+
+        await expect(promise).rejects.toThrow();
+    });
+
+    it('should throw if PasswordHasherAdapter throws', async () => {
+        // Arrange
+        const { sut, passwordHasherAdapter } = makeSut();
+        jest.spyOn(passwordHasherAdapter, 'execute').mockRejectedValue(
+            new Error(),
+        );
+
+        // Act
+        const promise = sut.execute(faker.string.uuid(), {
+            password: faker.internet.password(),
         });
 
         //  Assert
