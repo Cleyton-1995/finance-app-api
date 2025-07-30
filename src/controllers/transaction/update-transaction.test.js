@@ -1,18 +1,11 @@
 import { faker } from '@faker-js/faker';
 import { UpdateTransactionsController } from './update-transaction';
+import { transaction } from '../../tests';
 
 describe('UpdateTransactionController', () => {
     class UpdateTransactionUseCaseStub {
         async execute() {
-            return [
-                {
-                    user_id: faker.string.uuid(),
-                    name: faker.commerce.productName(),
-                    date: faker.date.anytime().toISOString().slice(0, 10),
-                    type: 'EXPENSE',
-                    amount: Number(faker.finance.amount()),
-                },
-            ];
+            return transaction;
         }
     }
 
