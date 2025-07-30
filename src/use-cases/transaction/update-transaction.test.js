@@ -5,7 +5,7 @@ import { transaction } from '../../tests';
 describe('UpdateTransactionUseCase', () => {
     class UpdateTransactionRepositoryStub {
         async execute() {
-            return { transaction };
+            return transaction;
         }
     }
 
@@ -31,7 +31,7 @@ describe('UpdateTransactionUseCase', () => {
         });
 
         // assert
-        expect(result).toEqual({ transaction });
+        expect(result).toEqual(transaction);
     });
 
     it('should call UpdateTransactionRepository with correct params', async () => {
