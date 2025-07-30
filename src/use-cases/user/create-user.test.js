@@ -1,8 +1,13 @@
-import { faker } from '@faker-js/faker';
 import { CreateUserCase } from './create-user';
 import { EmailAlreadyIsUserError } from '../../errors/user';
+import { user as fixtureUser } from '../../tests';
 
 describe('CreateUserUseCase', () => {
+    const user = {
+        ...fixtureUser,
+        id: undefined,
+    };
+
     class GetUserByEmailRepositoryStub {
         async execute() {
             return null;
@@ -47,15 +52,6 @@ describe('CreateUserUseCase', () => {
             idGeneratorAdapter,
             sut,
         };
-    };
-
-    const user = {
-        first_name: faker.person.firstName(),
-        last_name: faker.person.lastName(),
-        email: faker.internet.email(),
-        password: faker.internet.password({
-            length: 6,
-        }),
     };
 
     it('should successfully create a user', async () => {
