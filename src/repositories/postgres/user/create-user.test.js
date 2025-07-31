@@ -6,6 +6,6 @@ describe('CreateUserRepository', () => {
 
         const result = await sut.execute(user);
 
-        expect(result).not.toBeNull();
+        expect(result).toBeTruthy();
     });
 });

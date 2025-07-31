@@ -7,7 +7,7 @@ const config = {
         '!src/generated/**', // ignora arquivos gerados
         '!src/**/node_modules/**',
     ],
-    globalSetup: '<rootDir>/jest.global-setup.mjs',
+    globalSetup: '<rootDir>/jest.global-setup.js',
     setupFilesAfterEnv: ['<rootDir>/jest.setup-after-env.js'],
 };
 
