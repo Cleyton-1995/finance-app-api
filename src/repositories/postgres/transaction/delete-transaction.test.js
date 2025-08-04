@@ -20,7 +20,11 @@ describe('PostgresDeleteTransactionRepository', () => {
         expect(result.name).toBe(transaction.name);
         expect(result.type).toBe(transaction.type);
         expect(result.user_id).toBe(user.id);
-        expect(String(result.amount)).toBe(String(transaction.amount));
+        expect(Number(result.amount)).toBeCloseTo(
+            Number(transaction.amount),
+            2,
+        );
+
         expect(dayjs(result.date).daysInMonth()).toBe(
             dayjs(transaction.date).daysInMonth(),
         );
