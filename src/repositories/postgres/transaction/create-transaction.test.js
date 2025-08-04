@@ -12,7 +12,10 @@ describe('PostgresCreateTransactionRepository', () => {
         expect(result.name).toBe(transaction.name);
         expect(result.type).toBe(transaction.type);
         expect(result.user_id).toBe(user.id);
-        expect(String(result.amount)).toBe(String(transaction.amount));
+        expect(Number(result.amount.toFixed(2))).toBe(
+            Number(transaction.amount.toFixed(2)),
+        );
+
         expect(dayjs(result.date).daysInMonth()).toBe(
             dayjs(transaction.date).daysInMonth(),
         );
