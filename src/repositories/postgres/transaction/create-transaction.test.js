@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import { prisma } from '../../../../prisma/prisma';
 import { PostgresCreateTransactionRepository } from './create-transaction';
 import { transaction, user } from '../../../tests';
+
 describe('PostgresCreateTransactionRepository', () => {
     it('should create a transaction on db', async () => {
         await prisma.user.create({ data: user });
