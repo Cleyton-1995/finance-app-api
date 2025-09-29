@@ -3,13 +3,15 @@ import express from 'express';
 
 import { usersRouter, transactionsRouter } from './src/routers/index.js';
 
-const app = express();
+export const app = express();
 
 app.use(express.json());
 
 app.use('/api/users', usersRouter);
 app.use('/api/transactions', transactionsRouter);
 
-app.listen(process.env.PORT, () =>
-    console.log(`listening on port ${process.env.PORT}`),
-);
+if (!process.env.JEST_WORKER_ID) {
+    app.listen(process.env.PORT, () =>
+        console.log(`listening on port ${process.env.PORT}`),
+    );
+}
