@@ -21,9 +21,14 @@ export const createTransactionSchema = z.object({
         .string({
             required_error: 'Date is required.',
         })
-        .regex(/^\d{4}-\d{2}-\d{2}$/, {
-            message: 'Date must be in YYYY-MM-DD format.',
-        }),
+        .refine(
+            (val) =>
+                /^\d{4}-\d{2}-\d{2}$/.test(val) ||
+                /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(.+)?$/.test(val),
+            {
+                message: 'Date must be in YYYY-MM-DD or ISO 8601 format.',
+            },
+        ),
     type: z
         .string({
             required_error: 'Type is required.',
