@@ -72,7 +72,7 @@ describe('PostgresDeleteTransactionRepository', () => {
         const sut = new PostgresDeleteTransactionRepository();
         jest.spyOn(prisma.transaction, 'delete').mockRejectedValueOnce(
             new PrismaClientKnownRequestError('', {
-                code: undefined,
+                code: 'P2025',
             }),
         );
 

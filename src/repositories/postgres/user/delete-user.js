@@ -1,4 +1,3 @@
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { prisma } from '../../../../prisma/prisma.js';
 import { UserNotFoundError } from '../../../errors/user.js';
 
@@ -11,10 +10,9 @@ export class PostgresDeleteUserRepository {
                 },
             });
         } catch (error) {
-            if (error instanceof PrismaClientKnownRequestError) {
-                if (error.code === undefined) {
-                    throw new UserNotFoundError(userId);
-                }
+            // Map Prisma's "record not found for delete" to a domain error
+            if (error && error.code === 'P2025') {
+                throw new UserNotFoundError(userId);
             }
 
             throw error;

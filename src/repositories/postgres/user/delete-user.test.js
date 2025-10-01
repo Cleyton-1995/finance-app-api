@@ -46,7 +46,7 @@ describe('PostgresDeleteUserRepository', () => {
         const sut = new PostgresDeleteUserRepository();
         jest.spyOn(prisma.user, 'delete').mockRejectedValueOnce(
             new PrismaClientKnownRequestError('', {
-                code: undefined,
+                code: 'P2025',
             }),
         );
 
