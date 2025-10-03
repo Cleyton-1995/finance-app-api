@@ -66,12 +66,16 @@ describe('PostgresUpdateTransactionRepository', () => {
 
         await sut.execute(transaction.id, updateData);
 
-        expect(prismaSpy).toHaveBeenCalledWith({
-            where: {
-                id: transaction.id,
-            },
-            data: updateData,
-        });
+        const [[calledArg]] = prismaSpy.mock.calls;
+        expect(calledArg.where.id).toBe(transaction.id);
+        expect(calledArg.data.id).toBe(updateData.id);
+        expect(calledArg.data.user_id).toBe(updateData.user_id);
+        expect(calledArg.data.name).toBe(updateData.name);
+        expect(calledArg.data.type).toBe(updateData.type);
+        expect(calledArg.data.date).toEqual(updateData.date);
+        expect(String(calledArg.data.amount)).toBe(
+            Number(updateData.amount).toFixed(2),
+        );
     });
 
     it('should throw if Prisma throws', async () => {
