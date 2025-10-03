@@ -1,5 +1,6 @@
 import { prisma } from '../../../../prisma/prisma.js';
 import { TransactionNotFoundError } from '../../../errors/transaction.js';
+import { Prisma } from '@prisma/client';
 
 export class PostgresUpdateTransactionsRepository {
     async execute(transactionId, updateTransactionsParams) {
@@ -13,6 +14,17 @@ export class PostgresUpdateTransactionsRepository {
                 )
             ) {
                 data.date = new Date(updateTransactionsParams.date);
+            }
+
+            if (
+                Object.prototype.hasOwnProperty.call(
+                    updateTransactionsParams,
+                    'amount',
+                )
+            ) {
+                data.amount = new Prisma.Decimal(
+                    Number(updateTransactionsParams.amount).toFixed(2),
+                );
             }
 
             return await prisma.transaction.update({
