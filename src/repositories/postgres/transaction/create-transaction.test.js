@@ -40,9 +40,15 @@ describe('PostgresCreateTransactionRepository', () => {
 
         await sut.execute(inputData);
 
-        expect(prismaSpy).toHaveBeenCalledWith({
-            data: inputData,
-        });
+        const [[calledArg]] = prismaSpy.mock.calls;
+        expect(calledArg.data.id).toBe(inputData.id);
+        expect(calledArg.data.user_id).toBe(inputData.user_id);
+        expect(calledArg.data.name).toBe(inputData.name);
+        expect(calledArg.data.type).toBe(inputData.type);
+        expect(calledArg.data.date).toEqual(inputData.date);
+        expect(calledArg.data.amount.toFixed(2)).toBe(
+            Number(inputData.amount).toFixed(2),
+        );
     });
 
     it('should throw if Prisma throws', async () => {
