@@ -6,7 +6,9 @@ import {
     invalidIdResponse,
     ok,
     serverError,
+    transactionNotFoundResponse,
 } from '../helpers/index.js';
+import { TransactionNotFoundError } from '../../errors/transaction.js';
 
 export class UpdateTransactionsController {
     constructor(updateTransactionsUseCase) {
@@ -38,6 +40,10 @@ export class UpdateTransactionsController {
                 return badRequest({
                     message: messages.length === 1 ? messages[0] : messages,
                 });
+            }
+
+            if (error instanceof TransactionNotFoundError) {
+                return transactionNotFoundResponse();
             }
 
             console.error(error);
