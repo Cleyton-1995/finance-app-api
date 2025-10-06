@@ -5,6 +5,11 @@
         "description": "API for FSC Finance App that allows users to manage their finances.",
         "version": "1.0.0"
     },
+    "host": "localhost:8080",
+    "basePath": "/",
+    "schemes": ["http"],
+    "consumes": ["application/json"],
+    "produces": ["application/json"],
 
     "paths": {
         "/api/users": {
@@ -13,17 +18,21 @@
                 "tags": ["User"],
                 "parameters": [
                     {
-                        "name": "body",
-                        "required": true,
                         "in": "body",
+                        "name": "body",
+                        "description": "User information to create",
+                        "required": true,
                         "schema": {
-                            "$ref": "#/definitions/User"
+                            "$ref": "#/definitions/CreateUserParams"
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "User created successfully"
+                        "description": "User created successfully",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
                     },
                     "400": {
                         "description": "Invalid params"
@@ -33,31 +42,59 @@
                     }
                 }
             }
+        },
+
+        "/api/users/{userId}": {
+            "get": {
+                "summary": "Get user by ID",
+                "tags": ["User"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "userId",
+                        "required": true,
+                        "type": "string",
+                        "description": "ID of the user to get"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User found",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }
         }
     },
+
     "definitions": {
         "CreateUserParams": {
             "type": "object",
+            "required": ["first_name", "last_name", "email", "password"],
             "properties": {
                 "first_name": {
                     "type": "string",
-                    "example": "John",
-                    "required": true
+                    "example": "John"
                 },
                 "last_name": {
                     "type": "string",
-                    "example": "Doe",
-                    "required": true
+                    "example": "Doe"
                 },
                 "email": {
                     "type": "string",
-                    "example": "john@doe.com",
-                    "required": true
+                    "example": "john@doe.com"
                 },
                 "password": {
                     "type": "string",
-                    "example": "password",
-                    "required": true
+                    "example": "password"
                 }
             }
         },
