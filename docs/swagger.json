@@ -87,7 +87,10 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "User deleted successfully"
+                        "description": "User deleted successfully",
+                        "schema": {
+                            "$ref": "#/definitions/User"
+                        }
                     },
                     "404": {
                         "description": "User not found"
