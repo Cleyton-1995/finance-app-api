@@ -11,18 +11,21 @@ jobs:
 
         steps:
             - name: Checkout code
-              uses: actions/checkout@v2
+              uses: actions/checkout@v4
 
             - name: Use Node.js
-              uses: actions/setup-node@v2
+              uses: actions/setup-node@v4
               with:
-                  node-version: '20'
+                  node-version: 20
 
-            - name: ESlint
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Run ESLint
               run: npm run eslint:check
 
-            - name: Prettier
+            - name: Run Prettier
               run: npm run prettier:check
 
-            - name: Test
+            - name: Run Tests
               run: npm run test
