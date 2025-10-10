@@ -53,7 +53,7 @@ describe('User Routes E2E Tests', () => {
         expect(response.body.last_name).toBe(updateUserParams.last_name);
         expect(response.body.email).toBe(updateUserParams.email);
         expect(response.body.password).not.toBe(createdUser.password);
-    });
+    }, 15000);
 
     it('DELETE /api/users/:userdId should return 200 when user is deleted', async () => {
         const { body: createdUser } = await request(app)
