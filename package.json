@@ -31,7 +31,8 @@
         "jest": "^30.0.4",
         "lint-staged": "^16.1.2",
         "prettier": "^3.6.0",
-        "prisma": "^6.12.0"
+        "prisma": "^6.12.0",
+        "supertest": "^7.1.4"
     },
     "dependencies": {
         "@prisma/client": "^6.12.0",
