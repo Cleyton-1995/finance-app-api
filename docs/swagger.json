@@ -5,9 +5,8 @@
         "description": "API for FSC Finance App that allows users to manage their finances.",
         "version": "1.0.0"
     },
-    "host": "localhost:8080",
     "basePath": "/",
-    "schemes": ["http"],
+    "schemes": ["https", "http"],
     "consumes": ["application/json"],
     "produces": ["application/json"],
 
