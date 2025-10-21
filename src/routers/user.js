@@ -4,6 +4,7 @@ import {
     makeDeleteUserController,
     makeGetUserBalanceController,
     makeGetUserByIdController,
+    makeLoginUserController,
     makeUpdateUserController,
 } from '../factories/controllers/user.js';
 
@@ -44,6 +45,14 @@ usersRouter.get('/:userId/balance', async (request, response) => {
 
     const { statusCode, body } =
         await getUserBalanceController.execute(request);
+
+    response.status(statusCode).send(body);
+});
+
+usersRouter.post('/login', async (request, response) => {
+    const loginUserController = makeLoginUserController();
+
+    const { statusCode, body } = await loginUserController.execute(request);
 
     response.status(statusCode).send(body);
 });
