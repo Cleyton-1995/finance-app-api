@@ -1,4 +1,4 @@
-import z from 'zod';
+import { z } from 'zod';
 
 export const createUserSchema = z.object({
     first_name: z
@@ -59,4 +59,22 @@ export const refreshTokenSchema = z.object({
     refreshToken: z.string().trim().min(1, {
         message: 'Refresh token is required.',
     }),
+});
+
+export const getUserBalanceSchema = z.object({
+    userId: z.string().uuid({
+        message: 'User ID must be a valid UUID.',
+    }),
+    from: z
+        .string()
+        .optional()
+        .refine((val) => !val || /^\d{4}-\d{2}-\d{2}$/.test(val), {
+            message: 'Invalid "from" date format (expected YYYY-MM-DD).',
+        }),
+    to: z
+        .string()
+        .optional()
+        .refine((val) => !val || /^\d{4}-\d{2}-\d{2}$/.test(val), {
+            message: 'Invalid "to" date format (expected YYYY-MM-DD).',
+        }),
 });
