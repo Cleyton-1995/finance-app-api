@@ -4,6 +4,9 @@ import { user } from '../tests/fixtures/user.js';
 import { faker } from '@faker-js/faker';
 import { TransactionType } from '@prisma/client';
 describe('User Routes E2E Tests', () => {
+    const from = '2025-10-01';
+    const to = '2025-10-31';
+
     it('POST /api/users should return 201 when user is created', async () => {
         const response = await request(app)
             .post('/api/users')
@@ -88,7 +91,7 @@ describe('User Routes E2E Tests', () => {
             .send({
                 user_id: createdUser.id,
                 name: faker.commerce.productName(),
-                date: faker.date.anytime().toISOString(),
+                date: new Date(from),
                 type: TransactionType.EARNING,
                 amount: 10000,
             });
@@ -99,7 +102,7 @@ describe('User Routes E2E Tests', () => {
             .send({
                 user_id: createdUser.id,
                 name: faker.commerce.productName(),
-                date: faker.date.anytime().toISOString(),
+                date: new Date(to),
                 type: TransactionType.EXPENSE,
                 amount: 2000,
             });
@@ -110,13 +113,13 @@ describe('User Routes E2E Tests', () => {
             .send({
                 user_id: createdUser.id,
                 name: faker.commerce.productName(),
-                date: faker.date.anytime().toISOString(),
+                date: new Date(to),
                 type: TransactionType.INVESTMENT,
                 amount: 2000,
             });
 
         const response = await request(app)
-            .get(`/api/users/balance`)
+            .get(`/api/users/balance?from=${from}&to=${to}`)
             .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`);
 
         expect(response.status).toBe(200);
