@@ -7,9 +7,23 @@ export class PostgresGetTransactionsByUserIdRepository {
         };
 
         if (from && to) {
+            // Set end date to end of day in UTC to include the full day
+            const toDate = new Date(to);
+            const endDate = new Date(
+                Date.UTC(
+                    toDate.getUTCFullYear(),
+                    toDate.getUTCMonth(),
+                    toDate.getUTCDate(),
+                    23,
+                    59,
+                    59,
+                    999,
+                ),
+            );
+
             where.date = {
                 gte: new Date(from),
-                lte: new Date(to),
+                lte: endDate,
             };
         }
 

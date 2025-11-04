@@ -3,10 +3,24 @@ import { prisma } from '../../../../prisma/prisma.js';
 
 export class PostgresGetUserBalanceRepository {
     async execute(userId, from, to) {
+        // Set end date to end of day in UTC to include the full day
+        const toDate = new Date(to);
+        const endDate = new Date(
+            Date.UTC(
+                toDate.getUTCFullYear(),
+                toDate.getUTCMonth(),
+                toDate.getUTCDate(),
+                23,
+                59,
+                59,
+                999,
+            ),
+        );
+
         const dateFilter = {
             date: {
                 gte: new Date(from),
-                lte: new Date(to),
+                lte: endDate,
             },
         };
 
@@ -70,13 +84,13 @@ export class PostgresGetUserBalanceRepository {
             : _totalInvestments.div(total).times(100).floor();
 
         return {
-            earnings: _totalEarnings,
-            expenses: _totalExpenses,
-            investments: _totalInvestments,
-            earningsPercentage,
-            expensesPercentage,
-            investmentsPercentage,
-            balance,
+            earnings: _totalEarnings.toString(),
+            expenses: _totalExpenses.toString(),
+            investments: _totalInvestments.toString(),
+            earningsPercentage: earningsPercentage.toString(),
+            expensesPercentage: expensesPercentage.toString(),
+            investmentsPercentage: investmentsPercentage.toString(),
+            balance: balance.toString(),
         };
     }
 }

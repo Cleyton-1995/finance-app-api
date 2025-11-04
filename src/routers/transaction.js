@@ -9,7 +9,7 @@ import { auth } from '../middlewares/auth.js';
 
 export const transactionsRouter = Router();
 
-transactionsRouter.post('/', auth, async (request, response) => {
+transactionsRouter.post('/me', auth, async (request, response) => {
     const createTransactionController = makeCreateTransactionController();
 
     const { statusCode, body } = await createTransactionController.execute({
@@ -22,7 +22,7 @@ transactionsRouter.post('/', auth, async (request, response) => {
 
     response.status(statusCode).send(body);
 });
-transactionsRouter.get('/', auth, async (request, response) => {
+transactionsRouter.get('/me', auth, async (request, response) => {
     const getTransactionsByUserIdController =
         makeGetTransactionsByUserIdController();
 
@@ -39,20 +39,26 @@ transactionsRouter.get('/', auth, async (request, response) => {
 
     response.status(statusCode).send(body);
 });
-transactionsRouter.patch('/:transactionId', auth, async (request, response) => {
-    const updateTransactionsController = makeUpdateTransactionsController();
+transactionsRouter.patch(
+    '/me/:transactionId',
+    auth,
+    async (request, response) => {
+        const updateTransactionsController = makeUpdateTransactionsController();
 
-    const { statusCode, body } = await updateTransactionsController.execute({
-        ...request,
-        query: {
-            ...request.query,
-            userId: request.userId,
-        },
-    });
+        const { statusCode, body } = await updateTransactionsController.execute(
+            {
+                ...request,
+                query: {
+                    ...request.query,
+                    userId: request.userId,
+                },
+            },
+        );
 
-    response.status(statusCode).send(body);
-});
-transactionsRouter.delete('/:transactionId', async (request, response) => {
+        response.status(statusCode).send(body);
+    },
+);
+transactionsRouter.delete('/me/:transactionId', async (request, response) => {
     const deleteTransactionController = makeDeleteTransactionController();
 
     const { statusCode, body } =
