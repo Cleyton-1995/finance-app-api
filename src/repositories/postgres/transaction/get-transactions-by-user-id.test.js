@@ -38,12 +38,26 @@ describe('PostgresGetTransactionsByUserIdRepository', () => {
 
         await sut.execute(user.id, from, to);
 
+        // End date should be end of day in UTC to include the full day
+        const toDate = new Date(to);
+        const endDate = new Date(
+            Date.UTC(
+                toDate.getUTCFullYear(),
+                toDate.getUTCMonth(),
+                toDate.getUTCDate(),
+                23,
+                59,
+                59,
+                999,
+            ),
+        );
+
         expect(prismaSpy).toHaveBeenCalledWith({
             where: {
                 user_id: user.id,
                 date: {
                     gte: new Date(from),
-                    lte: new Date(to),
+                    lte: endDate,
                 },
             },
         });

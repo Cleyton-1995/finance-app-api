@@ -62,10 +62,10 @@ describe('PostgresGetUserBalanceRepository', () => {
 
         const result = await sut.execute(user.id, from, to);
 
-        expect(result.earnings.toString()).toBe('10000');
-        expect(result.expenses.toString()).toBe('2000');
-        expect(result.investments.toString()).toBe('6000');
-        expect(result.balance.toString()).toBe('2000');
+        expect(result.earnings).toBe('10000');
+        expect(result.expenses).toBe('2000');
+        expect(result.investments).toBe('6000');
+        expect(result.balance).toBe('2000');
     });
 
     it('should call Prisma with correct params', async () => {
@@ -74,6 +74,20 @@ describe('PostgresGetUserBalanceRepository', () => {
 
         await sut.execute(fakeUser.id, from, to);
 
+        // End date should be end of day in UTC to include the full day
+        const toDate = new Date(to);
+        const endDate = new Date(
+            Date.UTC(
+                toDate.getUTCFullYear(),
+                toDate.getUTCMonth(),
+                toDate.getUTCDate(),
+                23,
+                59,
+                59,
+                999,
+            ),
+        );
+
         expect(prismaSpy).toHaveBeenCalledTimes(3);
         expect(prismaSpy).toHaveBeenCalledWith({
             where: {
@@ -81,7 +95,7 @@ describe('PostgresGetUserBalanceRepository', () => {
                 type: TransactionType.EXPENSE,
                 date: {
                     gte: new Date(from),
-                    lte: new Date(to),
+                    lte: endDate,
                 },
             },
             _sum: {
@@ -94,7 +108,7 @@ describe('PostgresGetUserBalanceRepository', () => {
                 type: TransactionType.EARNING,
                 date: {
                     gte: new Date(from),
-                    lte: new Date(to),
+                    lte: endDate,
                 },
             },
             _sum: {
@@ -107,7 +121,7 @@ describe('PostgresGetUserBalanceRepository', () => {
                 type: TransactionType.INVESTMENT,
                 date: {
                     gte: new Date(from),
-                    lte: new Date(to),
+                    lte: endDate,
                 },
             },
             _sum: {
