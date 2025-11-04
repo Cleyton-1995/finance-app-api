@@ -27,12 +27,15 @@ describe('GetUserBalanceUseCase', () => {
         return { getUserBalanceRepository, getUserByIdRepository, sut };
     };
 
+    const from = '2025-10-01';
+    const to = '2025-10-31';
+
     it('should get user balance successfully', async () => {
         // Arrange
         const { sut } = makeSut();
 
         // Act
-        const result = await sut.execute(faker.string.uuid());
+        const result = await sut.execute(faker.string.uuid(), from, to);
 
         //  Assert
         expect(result).toEqual(userBalance);
@@ -45,7 +48,7 @@ describe('GetUserBalanceUseCase', () => {
         const userId = faker.string.uuid();
 
         // Act
-        const promise = sut.execute(userId);
+        const promise = sut.execute(userId, from, to);
 
         //  Assert
         await expect(promise).rejects.toThrow(new UserNotFoundError(userId));
@@ -58,7 +61,7 @@ describe('GetUserBalanceUseCase', () => {
         const userId = faker.string.uuid();
 
         // Act
-        await sut.execute(userId);
+        await sut.execute(userId, from, to);
 
         //  Assert
         expect(executeSpy).toHaveBeenCalledWith(userId);
@@ -71,10 +74,10 @@ describe('GetUserBalanceUseCase', () => {
         const userId = faker.string.uuid();
 
         // Act
-        await sut.execute(userId);
+        await sut.execute(userId, from, to);
 
         //  Assert
-        expect(executeSpy).toHaveBeenCalledWith(userId);
+        expect(executeSpy).toHaveBeenCalledWith(userId, from, to);
     });
 
     it('should throw if GetUserByIdRepository throws', async () => {
@@ -86,7 +89,7 @@ describe('GetUserBalanceUseCase', () => {
         );
 
         // Act
-        const promise = sut.execute(faker.string.uuid());
+        const promise = sut.execute(faker.string.uuid(), from, to);
 
         //  Assert
         expect(promise).rejects.toThrow();
@@ -101,7 +104,7 @@ describe('GetUserBalanceUseCase', () => {
         );
 
         // Act
-        const promise = sut.execute(faker.string.uuid());
+        const promise = sut.execute(faker.string.uuid(), from, to);
 
         //  Assert
         expect(promise).rejects.toThrow();
