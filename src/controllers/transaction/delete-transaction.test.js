@@ -4,6 +4,8 @@ import { transaction } from '../../tests';
 import { TransactionNotFoundError } from '../../errors';
 
 describe('DeleteTransactionController', () => {
+    const userId = faker.string.uuid();
+
     class DeleteTransactionUseCaseStub {
         async execute() {
             return transaction;
@@ -25,6 +27,7 @@ describe('DeleteTransactionController', () => {
         const response = await sut.execute({
             params: {
                 transactionId: faker.string.uuid(),
+                user_id: userId,
             },
         });
 
@@ -40,6 +43,7 @@ describe('DeleteTransactionController', () => {
         const response = await sut.execute({
             params: {
                 transactionId: 'invalid_id',
+                user_id: userId,
             },
         });
 
@@ -59,6 +63,7 @@ describe('DeleteTransactionController', () => {
         const result = await sut.execute({
             params: {
                 transactionId: faker.string.uuid(),
+                user_id: userId,
             },
         });
 
@@ -78,6 +83,7 @@ describe('DeleteTransactionController', () => {
         const result = await sut.execute({
             params: {
                 transactionId: faker.string.uuid(),
+                user_id: userId,
             },
         });
 
