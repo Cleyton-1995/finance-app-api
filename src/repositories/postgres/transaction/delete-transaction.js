@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { prisma } from '../../../../prisma/prisma.js';
 import { TransactionNotFoundError } from '../../../errors/index.js';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 export class PostgresDeleteTransactionRepository {
     async execute(transactionId) {
@@ -18,7 +19,10 @@ export class PostgresDeleteTransactionRepository {
             };
         } catch (error) {
             // Map Prisma's "record not found for delete" to a domain error
-            if (error && error.code === 'P2025') {
+            if (
+                error instanceof PrismaClientKnownRequestError &&
+                error.code === 'P2025'
+            ) {
                 throw new TransactionNotFoundError(transactionId);
             }
 
