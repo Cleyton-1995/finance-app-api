@@ -8,7 +8,7 @@ describe('PostgresGetTransactionsByUserIdRepository', () => {
     const to = '2025-10-31';
 
     it('should get transactions by user id on db', async () => {
-        const date = '2024-01-02';
+        const date = '2025-10-01';
         const sut = new PostgresGetTransactionsByUserIdRepository();
         await prisma.user.create({ data: user });
         await prisma.transaction.create({

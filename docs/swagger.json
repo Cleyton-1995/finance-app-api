@@ -262,7 +262,7 @@
                         "schema": {
                             "type": "string",
                             "format": "date",
-                            "example": "2024-01-01"
+                            "example": "2025-10-01"
                         }
                     },
                     {
@@ -273,7 +273,7 @@
                         "schema": {
                             "type": "string",
                             "format": "date",
-                            "example": "2024-01-31"
+                            "example": "2025-10-31"
                         }
                     }
                 ],
@@ -318,7 +318,7 @@
                         "schema": {
                             "type": "string",
                             "format": "date",
-                            "example": "2024-01-01"
+                            "example": "2025-10-01"
                         }
                     },
                     {
@@ -329,7 +329,7 @@
                         "schema": {
                             "type": "string",
                             "format": "date",
-                            "example": "2024-01-31"
+                            "example": "2025-10-31"
                         }
                     }
                 ],

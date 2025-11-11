@@ -21,8 +21,8 @@ describe('GetUserBalanceController', () => {
             userId: faker.string.uuid(),
         },
         query: {
-            from: '2024-01-01',
-            to: '2024-01-31',
+            from: '2025-10-01',
+            to: '2025-10-31',
         },
     };
 
@@ -47,8 +47,8 @@ describe('GetUserBalanceController', () => {
                 userId: 'invalid_id',
             },
             query: {
-                from: '2024-01-01',
-                to: '2024-01-31',
+                from: '2025-10-01',
+                to: '2025-10-31',
             },
         });
 
