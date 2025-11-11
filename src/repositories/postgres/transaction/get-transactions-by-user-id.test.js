@@ -4,8 +4,8 @@ import { user, transaction } from '../../../tests';
 import { PostgresGetTransactionsByUserIdRepository } from './get-transactions-by-user-id';
 
 describe('PostgresGetTransactionsByUserIdRepository', () => {
-    const from = '2024-01-01';
-    const to = '2024-01-31';
+    const from = '2025-10-01';
+    const to = '2025-10-31';
 
     it('should get transactions by user id on db', async () => {
         const date = '2024-01-02';
